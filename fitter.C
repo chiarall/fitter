@@ -25,7 +25,7 @@ void fitter(){
   RooAbsPdf* pdfBkgX = pdfGenerator->getBkgPDF();
 
   // Set setSigmaVal
-  pdfGenerator->setSigmaXval(4);
+  pdfGenerator->setSigmaXval(1);
   // Set setSigmaVal
   pdfGenerator->setSigmaYval(1);
 
@@ -58,9 +58,9 @@ void fitter(){
   // Plot x distribution of data and projection of model on x = Int(dy) model(x,y)
   modelData->plotOn(xframe);
   myPDF->plotOn(xframe);
-  myPDF->plotOn(xframe,Components("*gaussianX"),LineColor(kRed));
+  myPDF->plotOn(xframe,Components(pdfSigX->GetName()),LineColor(kRed));
   xframe->getAttLine()->SetLineWidth(1.0);
-  myPDF->plotOn(xframe,Components("*px"),LineColor(kBlack));
+  myPDF->plotOn(xframe,Components(pdfBkgX->GetName()),LineColor(kBlack));
   xframe->getAttLine()->SetLineWidth(1.0);
   xframe->getAttLine()->SetLineStyle(kDashed);
   xframe->Draw();

@@ -20,6 +20,8 @@ RooRealVar* sigmaYvar;
 
 RooAbsPdf* gaussianX;
 RooAbsPdf* px;
+RooAbsPdf* gaussianY;
+RooAbsPdf* py;
 
 public:
   PDF();

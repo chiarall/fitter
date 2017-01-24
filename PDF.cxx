@@ -10,11 +10,6 @@
 ClassImp(PDF)
 
 PDF::PDF(): TObject(){
-
-}
-
-RooAbsPdf * PDF::createPDF(){
-
   // **************************************
   // ** PDF for the x observable         **
   // ** signal: gaussian  (gaussianX)    **
@@ -26,10 +21,10 @@ RooAbsPdf * PDF::createPDF(){
   meanXvar = new RooRealVar("meanXvar","mean of gaussian for x variable",1,-10,10);
   sigmaXvar = new RooRealVar("sigmaXvar","width of gaussian for x variable",1,0.1,10);
   // signal PDF for the x observable
-  RooGaussian* gaussianX = new RooGaussian("gaussianX","gaussian PDF for x variable",*xvar,*meanXvar,*sigmaXvar);
+  gaussianX = new RooGaussian("gaussianX","gaussian PDF for x variable",*xvar,*meanXvar,*sigmaXvar);
 
   // background PDF for the x observable
-  RooPolynomial* px = new RooPolynomial("px","px",*xvar);
+  px = new RooPolynomial("px","px",*xvar);
 
   // **************************************
   // ** PDF for the y observable         **
@@ -42,10 +37,16 @@ RooAbsPdf * PDF::createPDF(){
   meanYvar = new RooRealVar("meanYvar","mean of gaussian for y variable",1,-10,10);
   sigmaYvar = new RooRealVar("sigmaYvar","width of gaussian for y variable",1,0.1,10);
   // signal PDF for the y observable
-  RooGaussian* gaussianY = new RooGaussian("gaussianY","gaussian PDF for y variable",*yvar,*meanYvar,*sigmaYvar);
+  gaussianY = new RooGaussian("gaussianY","gaussian PDF for y variable",*yvar,*meanYvar,*sigmaYvar);
 
   // background PDF for the y observable
-  RooPolynomial* py = new RooPolynomial("py","py",*yvar);
+  py = new RooPolynomial("py","py",*yvar);
+
+
+}
+
+RooAbsPdf * PDF::createPDF(){
+
 
   // ********************************
   // *** construct the signal pdf  **
