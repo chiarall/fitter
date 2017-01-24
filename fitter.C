@@ -21,18 +21,25 @@ void fitter(){
   RooRealVar* x = pdfGenerator->getX();
   RooRealVar* y = pdfGenerator->getY();
 
-    // // G e n e r a t e   e v e n t s
-  // // -----------------------------
-  //
-  // Sample 10000 events in (x,y) from the model
-  RooDataSet* modelData = myPDF->generate(RooArgSet(*x,*y),10000) ;
 
-  // // F i t   m o d e l   t o   d a t a
-  // // -----------------------------
-  //
-  // // Fit pdf to data
-  myPDF->fitTo(*modelData) ;
-  // // Print values of mean and sigma (that now reflect fitted values and errors)
+  // Set setSigmaVal
+  pdfGenerator->setSigmaXval(3);
+  // Set setSigmaVal
+  pdfGenerator->setSigmaYval(2);
+
+  // --------------------------------
+  // Generate events
+  // --------------------------------
+
+  // Sample 10000 events in (x,y) from the model
+  RooDataSet* modelData = myPDF->generate(RooArgSet(*x,*y),10000);
+
+  // --------------------------------
+  // Fit model to data
+  // --------------------------------
+
+  myPDF->fitTo(*modelData);
+  // Print values of mean and sigma
   pdfGenerator->print();
 
   // ------------------------------------------
@@ -47,7 +54,7 @@ void fitter(){
 
       // Plot x distribution of data and projection of model on x = Int(dy) model(x,y)
       // Plot y distribution of data and projection of model on y = Int(dx) model(x,y)
-  
+
   modelData->plotOn(yframe);
   myPDF->plotOn(yframe);
 

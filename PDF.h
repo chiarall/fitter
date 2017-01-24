@@ -22,7 +22,10 @@ public:
   PDF();
   RooAddPdf* createPDF();
   void print();
-  void setSigmaVal(double val);
+  void setSigmaXval(double val);
+  void setSigmaYval(double val);
+  void setMeanXval(double val);
+  void setMeanYval(double val);
   RooRealVar* getX();
   RooRealVar* getY();
 

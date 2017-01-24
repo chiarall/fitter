@@ -47,24 +47,42 @@ RooAddPdf * PDF::createPDF(){
   // background PDF for the y observable
   RooPolynomial* py = new RooPolynomial("py","py",*yvar);
 
-
+  // ********************************
+  // *** construct the signal pdf  **
+  // ********************************
   // x and y not correlated -> construct the signal pdf gaussianX * gaussianY
   RooProdPdf* sig_pdf = new RooProdPdf("sig_pdf","signal PDF",*gaussianX,*gaussianY);
 
-  // construct the background pdf px * py
+  // *********************************************
+  // *** construct the background pdf px * py ****
+  // *********************************************
   RooProdPdf* bkg_pdf = new RooProdPdf("bkg_pdf","background PDF",*px,*py);
 
   // fraction of signal f_sig
   RooRealVar* f_sig = new RooRealVar("f_sig","fraction of signal",0.,1.);
 
-  // model = f_sig * sig + (1-f_sig) * bkg
+  // ********************************************
+  // ** model = f_sig * sig + (1-f_sig) * bkg  **
+  // ********************************************
   RooAddPdf* model = new RooAddPdf("model","model",RooArgList(*sig_pdf,*bkg_pdf),*f_sig);
 
   return model;
 }
 
-void PDF::setSigmaVal(double val){
+void PDF::setSigmaXval(double val){
   sigmaXvar->setVal(val);
+}
+
+void PDF::setSigmaYval(double val){
+  sigmaYvar->setVal(val);
+}
+
+void PDF::setMeanXval(double val){
+  meanXvar->setVal(val);
+}
+
+void PDF::setMeanYval(double val){
+  meanYvar->setVal(val);
 }
 
 void PDF::print(){
