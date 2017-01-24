@@ -18,14 +18,19 @@ RooRealVar* yvar;
 RooRealVar* meanYvar;
 RooRealVar* sigmaYvar;
 
+RooAbsPdf* gaussianX;
+RooAbsPdf* px;
+
 public:
   PDF();
-  RooAddPdf* createPDF();
+  RooAbsPdf* createPDF();
   void print();
   void setSigmaXval(double val);
   void setSigmaYval(double val);
   void setMeanXval(double val);
   void setMeanYval(double val);
+  RooAbsPdf* getSigPDF();
+  RooAbsPdf* getBkgPDF();
   RooRealVar* getX();
   RooRealVar* getY();
 

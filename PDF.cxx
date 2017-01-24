@@ -13,7 +13,7 @@ PDF::PDF(): TObject(){
 
 }
 
-RooAddPdf * PDF::createPDF(){
+RooAbsPdf * PDF::createPDF(){
 
   // **************************************
   // ** PDF for the x observable         **
@@ -92,10 +92,18 @@ void PDF::print(){
   sigmaYvar->Print() ;
 }
 
-RooRealVar* PDF::getX(){
+ RooAbsPdf * PDF::getSigPDF(){
+   return gaussianX;
+ }
+
+ RooAbsPdf * PDF::getBkgPDF(){
+   return px;
+ }
+
+RooRealVar * PDF::getX(){
   return xvar;
 }
 
-RooRealVar* PDF::getY(){
+RooRealVar * PDF::getY(){
   return yvar;
 }

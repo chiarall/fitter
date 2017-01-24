@@ -16,11 +16,13 @@ using namespace RooFit ;
 void fitter(){
 
   PDF * pdfGenerator = new PDF();
-  RooAddPdf* myPDF = pdfGenerator->createPDF();
+  RooAbsPdf* myPDF = pdfGenerator->createPDF();
 
   RooRealVar* x = pdfGenerator->getX();
   RooRealVar* y = pdfGenerator->getY();
 
+  RooAbsPdf* pdfSigX = pdfGenerator->getSigPDF();
+  RooAbsPdf* pdfBkgX = pdfGenerator->getBkgPDF();
 
   // Set setSigmaVal
   pdfGenerator->setSigmaXval(4);
@@ -56,6 +58,11 @@ void fitter(){
   // Plot x distribution of data and projection of model on x = Int(dy) model(x,y)
   modelData->plotOn(xframe);
   myPDF->plotOn(xframe);
+  myPDF->plotOn(xframe,Components("*gaussianX"),LineColor(kRed));
+  xframe->getAttLine()->SetLineWidth(1.0);
+  myPDF->plotOn(xframe,Components("*px"),LineColor(kBlack));
+  xframe->getAttLine()->SetLineWidth(1.0);
+  xframe->getAttLine()->SetLineStyle(kDashed);
   xframe->Draw();
   c->cd(2);
   // Plot y distribution of data and projection of model on y = Int(dx) model(x,y)
