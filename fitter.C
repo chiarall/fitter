@@ -23,9 +23,9 @@ void fitter(){
 
 
   // Set setSigmaVal
-  pdfGenerator->setSigmaXval(3);
+  pdfGenerator->setSigmaXval(4);
   // Set setSigmaVal
-  pdfGenerator->setSigmaYval(2);
+  pdfGenerator->setSigmaYval(1);
 
   // --------------------------------
   // Generate events
@@ -45,18 +45,23 @@ void fitter(){
   // ------------------------------------------
   // Plot histograms
   // ------------------------------------------
-
-
   // frame for x projection
   RooPlot* xframe = x->frame();
   // frame for y projection
   RooPlot* yframe = y->frame();
 
-      // Plot x distribution of data and projection of model on x = Int(dy) model(x,y)
-      // Plot y distribution of data and projection of model on y = Int(dx) model(x,y)
-
+  TCanvas* c = new TCanvas("x observable","x observable",800,400);
+  c->Divide(2);
+  c->cd(1);
+  // Plot x distribution of data and projection of model on x = Int(dy) model(x,y)
+  modelData->plotOn(xframe);
+  myPDF->plotOn(xframe);
+  xframe->Draw();
+  c->cd(2);
+  // Plot y distribution of data and projection of model on y = Int(dx) model(x,y)
   modelData->plotOn(yframe);
   myPDF->plotOn(yframe);
+  yframe->Draw();
 
 }
 
