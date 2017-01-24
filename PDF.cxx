@@ -42,7 +42,6 @@ PDF::PDF(): TObject(){
   // background PDF for the y observable
   py = new RooPolynomial("py","py",*yvar);
 
-
 }
 
 RooAbsPdf * PDF::createPDF(){
@@ -65,8 +64,12 @@ RooAbsPdf * PDF::createPDF(){
   // ********************************************
   // ** model = f_sig * sig + (1-f_sig) * bkg  **
   // ********************************************
-  RooAddPdf* model = new RooAddPdf("model","model",RooArgList(*sig_pdf,*bkg_pdf),*f_sig);
+  model = new RooAddPdf("model","model",RooArgList(*sig_pdf,*bkg_pdf),*f_sig);
 
+  return model;
+}
+
+RooAbsPdf* PDF::getModel(){
   return model;
 }
 

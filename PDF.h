@@ -22,6 +22,7 @@ RooAbsPdf* gaussianX;
 RooAbsPdf* px;
 RooAbsPdf* gaussianY;
 RooAbsPdf* py;
+RooAbsPdf* model;
 
 public:
   PDF();
@@ -31,6 +32,7 @@ public:
   void setSigmaYval(double val);
   void setMeanXval(double val);
   void setMeanYval(double val);
+  RooAbsPdf* getModel();
   RooAbsPdf* getSigPDF();
   RooAbsPdf* getBkgPDF();
   RooRealVar* getX();

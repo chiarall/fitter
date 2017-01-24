@@ -10,8 +10,7 @@
 using namespace std ;
 using namespace RooFit ;
 
-
-
+void plotFunction(PDF* pdfObject,RooDataSet* modelData);
 
 void fitter(){
 
@@ -21,9 +20,6 @@ void fitter(){
   RooRealVar* x = pdfGenerator->getX();
   RooRealVar* y = pdfGenerator->getY();
 
-  RooAbsPdf* pdfSigX = pdfGenerator->getSigPDF();
-  RooAbsPdf* pdfBkgX = pdfGenerator->getBkgPDF();
-
   // Set setSigmaVal
   pdfGenerator->setSigmaXval(1);
   // Set setSigmaVal
@@ -32,18 +28,36 @@ void fitter(){
   // --------------------------------
   // Generate events
   // --------------------------------
-
   // Sample 10000 events in (x,y) from the model
   RooDataSet* modelData = myPDF->generate(RooArgSet(*x,*y),10000);
 
   // --------------------------------
   // Fit model to data
   // --------------------------------
-
   myPDF->fitTo(*modelData);
   // Print values of mean and sigma
   pdfGenerator->print();
 
+  plotFunction(pdfGenerator,modelData);
+
+}
+
+int main(int argc, char **argv){
+  TApplication theApp("App",&argc, argv);
+  fitter();
+  theApp.Run();
+ return 0;
+}
+
+void plotFunction(PDF* pdfObject, RooDataSet* modelData){
+
+  RooRealVar* x = pdfObject->getX();
+  RooRealVar* y = pdfObject->getY();
+
+  RooAbsPdf* pdfSigX = pdfObject->getSigPDF();
+  RooAbsPdf* pdfBkgX = pdfObject->getBkgPDF();
+
+  RooAbsPdf* myPDF = pdfObject->getModel();
   // ------------------------------------------
   // Plot histograms
   // ------------------------------------------
@@ -70,11 +84,4 @@ void fitter(){
   myPDF->plotOn(yframe);
   yframe->Draw();
 
-}
-
-int main(int argc, char **argv){
-  TApplication theApp("App",&argc, argv);
-  fitter();
-  theApp.Run();
- return 0;
 }
