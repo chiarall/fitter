@@ -10,30 +10,55 @@
 ClassImp(PDF)
 
 PDF::PDF(): TObject(){
+
+}
+
+RooAddPdf * PDF::createPDF(){
+
+  // **************************************
+  // ** PDF for the x observable         **
+  // ** signal: gaussian  (gaussianX)    **
+  // ** background: polynomial  (px)     **
+  // **************************************
+
   //Define the observable x, the mean and the sigma of the gaussian for the x observable
   xvar = new RooRealVar("xvar","xvar",-10,10);
   meanXvar = new RooRealVar("meanXvar","mean of gaussian for x variable",1,-10,10);
   sigmaXvar = new RooRealVar("sigmaXvar","width of gaussian for x variable",1,0.1,10);
+  // signal PDF for the x observable
+  RooGaussian* gaussianX = new RooGaussian("gaussianX","gaussian PDF for x variable",*xvar,*meanXvar,*sigmaXvar);
+
+  // background PDF for the x observable
+  RooPolynomial* px = new RooPolynomial("px","px",*xvar);
+
+  // **************************************
+  // ** PDF for the y observable         **
+  // ** signal: gaussian  (gaussianY)    **
+  // ** background: polynomial  (py)     **
+  // **************************************
 
   //Define the observable y, the mean and the sigma of the gaussian for the y observable
   yvar = new RooRealVar("yvar","yvar",-10,10);
   meanYvar = new RooRealVar("meanYvar","mean of gaussian for y variable",1,-10,10);
   sigmaYvar = new RooRealVar("sigmaYvar","width of gaussian for y variable",1,0.1,10);
-}
-
-RooAddPdf * PDF::createPDF(){
-  // Construct the signal pdf gauss(x)*gauss(y)
-  RooGaussian* gaussianX = new RooGaussian("gaussianX","gaussian PDF for x variable",*xvar,*meanXvar,*sigmaXvar);
+  // signal PDF for the y observable
   RooGaussian* gaussianY = new RooGaussian("gaussianY","gaussian PDF for y variable",*yvar,*meanYvar,*sigmaYvar);
-  RooProdPdf* sig = new RooProdPdf("sig","signal PDF",*gaussianX,*gaussianY);
 
-  // Construct the background pdf (flat in x,y)
-  RooPolynomial* px = new RooPolynomial("px","px",*xvar);
+  // background PDF for the y observable
   RooPolynomial* py = new RooPolynomial("py","py",*yvar);
-  RooProdPdf* bkg = new RooProdPdf("bkg","background PDF",*px,*py);
 
+
+  // x and y not correlated -> construct the signal pdf gaussianX * gaussianY
+  RooProdPdf* sig_pdf = new RooProdPdf("sig_pdf","signal PDF",*gaussianX,*gaussianY);
+
+  // construct the background pdf px * py
+  RooProdPdf* bkg_pdf = new RooProdPdf("bkg_pdf","background PDF",*px,*py);
+
+  // fraction of signal f_sig
   RooRealVar* f_sig = new RooRealVar("f_sig","fraction of signal",0.,1.);
-  RooAddPdf* model = new RooAddPdf("model","model",RooArgList(*sig,*bkg),*f_sig);
+
+  // model = f_sig * sig + (1-f_sig) * bkg
+  RooAddPdf* model = new RooAddPdf("model","model",RooArgList(*sig_pdf,*bkg_pdf),*f_sig);
 
   return model;
 }
